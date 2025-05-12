@@ -1,0 +1,47 @@
+@startuml
+' Paquetes del sistema
+package modelo {
+  ' Componente común
+  abstract class Elemento {
+    - codigo: int
+    - precio: double
+    + getCodigo(): int
+    + getPrecio(): double
+  }
+
+  ' Hoja: elemento simple concreto (p.ej. Mesa, Silla...)
+  class ElementoSimple {
+    // atributos y métodos específicos según tipo
+  }
+  ElementoSimple --|> Elemento
+
+  ' Componente compuesto Kit
+  class Kit {
+    - componentes: List<Elemento>
+    + getCodigo(): int
+    + getPrecio(): double
+    + agregarComponente(e: Elemento): void
+    + getComponentes(): List<Elemento>
+  }
+  Kit --|> Elemento
+  Kit *-- Elemento : componentes
+}
+
+package builder {
+  ' Builder para creación de kits
+  class KitBuilder {
+    - codigo: int
+    - componentes: List<Elemento>
+    + setCodigo(codigo: int): KitBuilder
+    + addComponente(e: Elemento): KitBuilder
+    + build(): Kit
+  }
+}
+
+' Alternativamente, podríamos usar un Factory Method
+package factory {
+  class KitFactory {
+    + crearKit(codigo: int, componentes: List<Elemento>): Kit
+  }
+}
+@enduml
